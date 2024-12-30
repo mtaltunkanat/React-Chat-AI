@@ -1,17 +1,12 @@
 import React, { useState } from "react";
 import CodeBlock from "./CodeBlock";  // CodeBlock bileşenini dahil ediyoruz
 import { fetchAIResponse } from "./openaiService"; // API entegrasyonu için ekleme
-import { fetchImageDescription } from "./imageService"; // Yeni görsel API fonksiyonu
-import ImageUpload from "./ImageUpload";  // Fotoğraf yükleme bileşeni
 import "./App.css";
 
 function App() {
   const [messages, setMessages] = useState([]);
   const [userMessage, setUserMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-  const [image, setImage] = useState(null);
-  const [imageDescription, setImageDescription] = useState("");
-  const [isProcessingImage, setIsProcessingImage] = useState(false);
 
   const handleSendMessage = async () => {
     if (!userMessage.trim()) return;
@@ -31,29 +26,7 @@ function App() {
     }
   };
 
-  const handleImageUpload = (file) => {
-    setImage(file);
-  };
-
-  const handleImageSubmit = async () => {
-    if (!image) return;
-
-    setIsProcessingImage(true);
-    try {
-      // Görseli yorumlamak için API çağrısı
-      const description = await fetchImageDescription(image);
-      setImageDescription(description);
-      setMessages([
-        ...messages,
-        { role: "assistant", content: `Görsel Yorum: ${description}` },
-      ]);
-    } catch (error) {
-      setImageDescription("Bir hata oluştu, lütfen tekrar deneyin.");
-    } finally {
-      setIsProcessingImage(false);
-    }
-  };
-
+  // Komutları özel olarak işleme fonksiyonu
   const renderMessageContent = (content) => {
     // Eğer içerik bir git komutu veya bash komutu içeriyorsa, ona göre stil uygula
     if (content.includes("git ")) {
@@ -80,16 +53,6 @@ function App() {
               </div>
             ))}
             {isTyping && <div className="typing-indicator">Yazıyor...</div>}
-            {isProcessingImage && <div className="typing-indicator">Görsel Yorumlanıyor...</div>}
-          </div>
-          <div>
-            <ImageUpload onImageUpload={handleImageUpload} />
-            {image && (
-              <button onClick={handleImageSubmit}>
-                Görseli Yorumla
-              </button>
-            )}
-            {imageDescription && <div><h2>Yorum:</h2><p>{imageDescription}</p></div>}
           </div>
           <input
             placeholder="Bir mesaj yazın..."
