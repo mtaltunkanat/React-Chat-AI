@@ -77,7 +77,7 @@ For questions or feedback, contact muhammedaltunkanat.kariyer@gmail.com
 
 ---
 
-This project is deployed and live using Vercel. Check it out here: [Chat AI on Vercel](https://chat-ai-foyh.vercel.app/)
+This project is deployed and live using Vercel. Check it out here: [Chat AI on Vercel](https://chat-ai-foyh.vercel.app/) (My key is Disabled😢)
 
 Enjoy building with Chat AI!
 
